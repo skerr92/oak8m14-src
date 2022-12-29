@@ -1,0 +1,128 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Thu Dec 29 16:26:56 2022
+[*]
+[dumpfile] "/mnt/c/Users/Seth Kerr/Documents/repos/oak8m14-src/oak8m_test.vcd"
+[dumpfile_mtime] "Thu Dec 29 16:23:48 2022"
+[dumpfile_size] 2762240
+[savefile] "/mnt/c/Users/Seth Kerr/Documents/repos/oak8m14-src/test/oakm14_test.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*0.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 214
+[signals_width] 198
+[sst_expanded] 1
+[sst_vpaned_height] 152
+@28
+oak8m.clk
+@22
+oak8m.cycles_per_ms[23:0]
+@28
+oak8m.edge_interrupts
+@22
+oak8m.i_la_addr[6:0]
+oak8m.i_la_data[7:0]
+@28
+oak8m.i_la_wb_disable
+oak8m.i_la_write
+@22
+oak8m.i_wb_addr[31:0]
+@28
+oak8m.i_wb_cyc
+@22
+oak8m.i_wb_data[31:0]
+@28
+oak8m.i_wb_stb
+oak8m.i_wb_we
+oak8m.interrupt
+oak8m.intr[1:0]
+oak8m.intr_enable[1:0]
+@22
+oak8m.io_in[7:0]
+oak8m.io_oeb[7:0]
+oak8m.io_out[7:0]
+@420
+oak8m.j
+@22
+oak8m.la_data_out[31:0]
+@28
+oak8m.level_interrupt
+@22
+oak8m.mem_addr[7:0]
+@28
+oak8m.mem_data_ready
+@22
+oak8m.mem_read_value[7:0]
+@28
+oak8m.mem_select
+oak8m.mem_type_data
+oak8m.mem_write_en
+@22
+oak8m.mem_write_value[7:0]
+oak8m.new_btop[7:0]
+oak8m.new_top[7:0]
+@28
+oak8m.o_wb_ack
+@22
+oak8m.o_wb_data[31:0]
+oak8m.opcode[3:0]
+oak8m.pc[5:0]
+oak8m.pc_plus[5:0]
+@28
+oak8m.pmem_d_type
+@22
+oak8m.pmem_in[7:0]
+oak8m.pmem_out[7:0]
+oak8m.pmem_w_addr[5:0]
+@28
+oak8m.pmem_we
+oak8m.prev_level_interrupt
+oak8m.prev_reg_write
+oak8m.rambus_wb_ack_i
+@22
+oak8m.rambus_wb_addr_o[9:0]
+@28
+oak8m.rambus_wb_clk_o
+oak8m.rambus_wb_cyc_o
+@22
+oak8m.rambus_wb_dat_i[31:0]
+oak8m.rambus_wb_dat_o[31:0]
+@28
+oak8m.rambus_wb_rst_o
+@22
+oak8m.rambus_wb_sel_o[3:0]
+@28
+oak8m.rambus_wb_stb_o
+oak8m.rambus_wb_we_o
+oak8m.reg_write
+@22
+oak8m.reg_write_addr[6:0]
+oak8m.reg_write_data[31:0]
+@28
+oak8m.reset
+oak8m.single_step
+oak8m.sleep
+@22
+oak8m.sp[3:0]
+oak8m.sp_min[3:0]
+oak8m.sp_w_cnt[7:0]
+@28
+oak8m.sram_enable
+oak8m.state[2:0]
+@22
+oak8m.state_name[63:0]
+@28
+oak8m.stop
+@22
+oak8m.top[7:0]
+oak8m.top_index[3:0]
+oak8m.wb_addr[23:0]
+@28
+oak8m.wb_read
+oak8m.wb_read_ack
+oak8m.wb_write
+@29
+oak8m.wb_write_ack
+[pattern_trace] 1
+[pattern_trace] 0

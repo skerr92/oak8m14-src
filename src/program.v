@@ -21,7 +21,7 @@ module program_ev(
     output reg [7:0] pmem_out, // program memory write data
     output reg [5:0] pmem_w_addr, // program memory write address
     output reg sleep, // sleep execution
-    output reg stop, // stop execution
+    output reg stop // stop execution
 );
 
 always @(*) begin
@@ -86,8 +86,26 @@ always @(*) begin
         new_top = btop;
         sp_w_cnt = 1;
     end
-    4'hA: sleep = 1'b1; // sleep
+    4'hA: begin 
+        new_top = top;
+        sp_w_cnt = 1;
+        sp_min = sp + 1;
+    end
+    4'hB: begin 
+        new_top = btop;
+        new_btop = top;
+        sp_w_cnt = 2;
+    end
+    4'hC: begin 
+        sp_min = sp - 2;
+    end
+    4'hE: sleep = 1'b1; // sleep
     4'hF: stop = 1'b1;
+    default: begin
+        new_top = opcode;
+        sp_w_cnt = 1;
+        sp_min = sp + 1;
+      end
     endcase
 end
 

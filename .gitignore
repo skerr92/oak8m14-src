@@ -1,1 +1,6 @@
 .vscode/
+*.vcd
+*.out
+*.xml
+*.pyc
+oak8m14.lvs.powered.v

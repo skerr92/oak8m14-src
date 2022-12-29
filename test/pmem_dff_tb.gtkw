@@ -1,0 +1,37 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Thu Dec 29 16:19:56 2022
+[*]
+[dumpfile] "/mnt/c/Users/Seth Kerr/Documents/repos/oak8m14-src/pmem_dff_tb.vcd"
+[dumpfile_mtime] "Thu Dec 29 16:18:54 2022"
+[dumpfile_size] 3135
+[savefile] "/mnt/c/Users/Seth Kerr/Documents/repos/oak8m14-src/test/pmem_dff_tb.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*0.000000 500000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] test_pmem_dff.
+[sst_width] 214
+[signals_width] 158
+[sst_expanded] 1
+[sst_vpaned_height] 152
+@22
+test_pmem_dff.mem.addr[7:0]
+@28
+test_pmem_dff.mem.clock
+test_pmem_dff.mem.cycles[1:0]
+@22
+test_pmem_dff.mem.data_in[7:0]
+test_pmem_dff.mem.data_out[7:0]
+@28
+test_pmem_dff.mem.data_ready
+@420
+test_pmem_dff.mem.i
+@28
+test_pmem_dff.mem.memory_type_data
+test_pmem_dff.mem.reset
+test_pmem_dff.mem.select
+@29
+test_pmem_dff.mem.write
+[pattern_trace] 1
+[pattern_trace] 0

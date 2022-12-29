@@ -6,7 +6,7 @@
 //
 `timescale 1ns / 1ps
 
-module spell_mem_dff (
+module pmem_dff (
     input wire reset,
     input wire clock,
     input wire select,
@@ -62,3 +62,4 @@ module spell_mem_dff (
       end
     end
   end
+  endmodule

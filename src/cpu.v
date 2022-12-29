@@ -40,7 +40,7 @@ module oak8m(
   input  wire [31:0] rambus_wb_dat_i,   // ram data in
 
   // interrupt
-  output wire interrupt;
+  output wire interrupt
 );
 
 localparam fetch = 3'b000;
@@ -48,7 +48,7 @@ localparam store = 3'b001;
 localparam ex    = 3'b010;
 localparam str   = 3'b011;
 localparam data  = 3'b100;
-localparam sleep = 3'b101;
+localparam slp = 3'b101;
 
 localparam REG_PC = 24'h000;
 localparam REG_SP = 24'h004;
@@ -71,14 +71,14 @@ reg [3:0] opcode;
 reg [7:0] pmem_in;
 reg [7:0] stack [15:0];
 
-wire [7:0] pc_plus;
+wire [5:0] pc_plus;
 wire [3:0] sp_min;
-wire [1:0] sp_w_cnt;
+wire [7:0] sp_w_cnt;
 wire [7:0] new_top;
 wire [7:0] new_btop;
 wire pmem_we;
 wire pmem_d_type;
-wire [7:0] pmem_w_addr;
+wire [5:0] pmem_w_addr;
 wire [7:0] pmem_out;
 wire sleep;
 wire stop;
@@ -90,6 +90,8 @@ reg edge_interrupts;
 wire level_interrupt = |(intr & intr_enable);
 reg prev_level_interrupt;
 assign interrupt = edge_interrupts ? (!prev_level_interrupt && level_interrupt) : level_interrupt;
+
+reg single_step;
 
 wire [3:0] top_index = sp - 1;
 wire [7:0] top = stack[top_index]; // current stack
@@ -105,7 +107,7 @@ wire [7:0] mem_read_value;
 wire mem_data_ready;
 
 // Delay related registers
-//reg [23:0] cycles_per_ms;
+reg [23:0] cycles_per_ms;
 //reg [23:0] delay_cycles;
 //reg [7:0] delay_counter;
 
@@ -141,14 +143,14 @@ always @(*) begin
     fetch: state_name <= "Fetch";
     ex: state_name <= "Execute";
     str: state_name <= "Store";
-    sleep: state_name <= "Sleep";
-    data: state_name <= "FetchData"
+    slp: state_name <= "Sleep";
+    data: state_name <= "FetchData";
     default: state_name <= "Invalid";
   endcase
 end
 
 program_ev program( // program evaluation
-  .opcode(opecode),
+  .opcode(opcode),
   .pc(pc),
   .sp(sp),
   .top(top),
@@ -209,10 +211,10 @@ pmem mem (
         REG_SP: o_wb_data <= {27'b0, sp};
         REG_EXEC: o_wb_data <= {24'b0, opcode};
         REG_CTRL: begin
-          o_wb_data <= {28'b0, edge_interrupts, sram_enable, single_step, state != StateSleep};
+          o_wb_data <= {28'b0, edge_interrupts, sram_enable, single_step, state != slp};
         end
         REG_CYCLES_PER_MS: o_wb_data <= {8'b0, cycles_per_ms};
-        REG_STACK_TOP: o_wb_data <= {24'b0, stack_top};
+        REG_STACK_TOP: o_wb_data <= {24'b0, top};
         REG_INT_ENABLE: o_wb_data[INTR_COUNT-1:0] <= intr_enable;
         REG_INT: o_wb_data[INTR_COUNT-1:0] <= intr;
         default: begin
@@ -230,7 +232,7 @@ pmem mem (
   // Main logic
   always @(posedge clk) begin
     if (reset) begin
-      state <= sleep;
+      state <= slp;
       pc    <= 0;
       sp    <= 0;
       for (j = 0; j < 32; j++) stack[j] = 0;
@@ -253,16 +255,14 @@ pmem mem (
           REG_PC: pc <= reg_write_data[7:0];
           REG_SP: sp <= reg_write_data[4:0];
           REG_EXEC: begin
-            if (state == sleep) begin
+            if (state == slp) begin
               opcode = reg_write_data[7:0];
               state <= is_data_opcode(opcode) ? data : ex;
               single_step <= 1;
-              out_of_order_exec <= 1;
             end
           end
           REG_CTRL: begin
-            if (reg_write_data[0] && state == sleep) begin
-              out_of_order_exec <= 0;
+            if (reg_write_data[0] && state == slp) begin
               state <= fetch;
             end
             single_step <= reg_write_data[1];
@@ -270,7 +270,7 @@ pmem mem (
             edge_interrupts <= reg_write_data[3];
           end
           REG_CYCLES_PER_MS: cycles_per_ms <= reg_write_data[23:0];
-          REG_STACK_TOP: stack[stack_top_index] <= reg_write_data[7:0];
+          REG_STACK_TOP: stack[top_index] <= reg_write_data[7:0];
           REG_STACK_PUSH:
           if (!prev_reg_write) begin
             stack[sp] <= reg_write_data[7:0];
@@ -299,7 +299,7 @@ pmem mem (
             // Read data for instruction from either code or data memory
             mem_select <= 1;
             mem_type_data <= (opcode == 4'h8) ? 1'b1 : 1'b0;
-            mem_addr <= stack_top;
+            mem_addr <= top;
             mem_write_en <= 0;
             if (mem_select && mem_data_ready) begin
               mem_select <= 0;
@@ -314,18 +314,18 @@ pmem mem (
             mem_type_data <= pmem_d_type;
             mem_addr <= pmem_w_addr;
             mem_write_value <= pmem_out;
-            if (sleep) intr[INTR_SLEEP] = 1'b1;
+            if (slp) intr[INTR_SLEEP] = 1'b1;
             if (stop) intr[INTR_STOP] = 1'b1;
-            if (stack_write_count == 1 || stack_write_count == 2) begin
-              stack[sp_min-1] = set_stack_top;
+            if (sp_w_cnt == 1 || sp_w_cnt == 2) begin
+              stack[sp_min-1] = new_top;
             end
-            if (stack_write_count == 2) begin
-              stack[sp_min-2] = set_stack_belowtop;
+            if (sp_w_cnt == 2) begin
+              stack[sp_min-2] = new_btop;
             end
-            if (memory_write_en) begin
+            if (pmem_we) begin
               state <= str;
-            end else if (sleep || stop || single_step) begin
-              state <= sleep;
+            end else if (slp || stop || single_step) begin
+              state <= slp;
             end else begin
               state <= fetch;
             end
@@ -337,10 +337,10 @@ pmem mem (
             if (mem_data_ready) begin
               mem_select <= 0;
               mem_write_en <= 0;
-              state <= single_step ? sleep : fetch;
+              state <= single_step ? slp : fetch;
             end
           end
-          sleep: begin
+          slp: begin
             // The only way to leave this state is via CPU intervention.
           end
           default: state <= 3'bx;
@@ -354,13 +354,13 @@ pmem mem (
   always @(posedge clk) begin
     if (f_init) assume (reset);
     if (!reset) begin
-      assert (!sleep || !stop);
+      assert (!slp || !stop);
       assert(
         state == fetch ||
         state == ex ||
         state == str ||
         state == data
-        state == sleep
+        state == slp
       );
       if (i_wb_stb && i_wb_cyc && $past(i_wb_stb) && $past(i_wb_cyc)) begin
         assume ($past(i_wb_addr) == i_wb_addr);

@@ -1,0 +1,43 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Thu Dec 29 16:17:53 2022
+[*]
+[dumpfile] "/mnt/c/Users/Seth Kerr/Documents/repos/oak8m14-src/program_tb.vcd"
+[dumpfile_mtime] "Thu Dec 29 16:15:13 2022"
+[dumpfile_size] 2244
+[savefile] "/mnt/c/Users/Seth Kerr/Documents/repos/oak8m14-src/test/execute_tb.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*0.000000 120000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] test_program_execute.
+[sst_width] 214
+[signals_width] 158
+[sst_expanded] 1
+[sst_vpaned_height] 152
+@22
+test_program_execute.exec.btop[7:0]
+test_program_execute.exec.new_btop[7:0]
+test_program_execute.exec.new_top[7:0]
+test_program_execute.exec.opcode[3:0]
+test_program_execute.exec.pc[5:0]
+test_program_execute.exec.pc_plus[5:0]
+@28
+test_program_execute.exec.pmem_d_type
+@22
+test_program_execute.exec.pmem_in[7:0]
+test_program_execute.exec.pmem_out[7:0]
+test_program_execute.exec.pmem_w_addr[5:0]
+@28
+test_program_execute.exec.pmem_we
+test_program_execute.exec.sleep
+@22
+test_program_execute.exec.sp[3:0]
+test_program_execute.exec.sp_min[3:0]
+test_program_execute.exec.sp_w_cnt[7:0]
+@28
+test_program_execute.exec.stop
+@23
+test_program_execute.exec.top[7:0]
+[pattern_trace] 1
+[pattern_trace] 0
